@@ -1,0 +1,25 @@
+{
+  "name": "award-radar",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Daily pipeline that scrapes web design award winners, analyzes each site, and publishes a static trend report.",
+  "scripts": {
+    "run": "tsx src/run.ts",
+    "analyze": "tsx src/analyze/index.ts",
+    "backfill": "tsx src/backfill.ts",
+    "digest": "tsx src/digest.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "playwright": "^1.49.1",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}
