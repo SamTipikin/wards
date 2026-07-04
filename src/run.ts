@@ -26,8 +26,11 @@ async function main(): Promise<void> {
     });
     insertAll(outcomes);
 
-    // 3. Analyze any winners still missing an analysis (new today + retries).
-    analysis = await analyzePending(db, browser);
+    // 3. Analyze winners still missing an analysis (new today + retries).
+    //    Capped per run so a backlog (e.g. after adding a source) can't blow
+    //    the CI job timeout; the remainder drains over subsequent runs.
+    const limit = Number(process.env.ANALYZE_LIMIT ?? '40') || undefined;
+    analysis = await analyzePending(db, browser, limit);
   } finally {
     await browser.close();
     db.close();

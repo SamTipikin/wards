@@ -52,7 +52,18 @@ Builds a fully static site from `data/radar.db` at build time.
 
 ## Status
 
-Phase 1 (scrape) and Phase 2 (analysis) are live for the **awwwards** source;
-31 winners analyzed end-to-end. Remaining scrapers (FWA, CSSDA, Godly,
-SiteInspire), backfill, and the weekly digest are scaffolded in the spec but not
-yet implemented.
+Scrape + analysis are live. Sources:
+
+| Source | Status | How |
+| --- | --- | --- |
+| **awwwards** | ✅ live | SOTD, DOM scrape. Cloudflare blocks GitHub's datacenter IP — often fails from CI, works locally. |
+| **fwa** | ✅ live | FOTD via the `thefwa.com/api/timeline` JSON API — robust, API-based. |
+| **siteinspire** | ✅ live | Recent featured, DOM scrape. |
+| **cssda** | ⛔ deferred | Hard 403 on all paths, even residential — actively blocks automation. |
+| **godly** | ⛔ deferred | Client-rendered SPA; entries are social posts without clean site URLs. |
+
+Multi-source means multi-platform winners fall out for free (a site winning on
+more than one platform). Per-run analysis is capped by `ANALYZE_LIMIT` (default
+40) so a backlog can't blow the CI timeout.
+
+Backfill and the weekly digest are specced but not yet implemented.

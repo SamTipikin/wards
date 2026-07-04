@@ -1,14 +1,24 @@
 import type { Browser } from 'playwright';
 import type { RunResult, Scraper, Winner } from '../types.js';
 import { AwwwardsScraper } from './awwwards.js';
+import { FwaScraper } from './fwa.js';
+import { SiteinspireScraper } from './siteinspire.js';
 
 export interface ScrapeOutcome extends RunResult {
   winners: Winner[];
 }
 
-/** Build the active scraper set. Phase 1: awwwards only. */
+/**
+ * Build the active scraper set. Awwwards (SOTD, DOM), FWA (FOTD via JSON API),
+ * SiteInspire (recent featured, DOM). CSSDA hard-blocks automation (403) and
+ * Godly is a social-heavy SPA without clean site URLs — both deferred.
+ */
 export function buildScrapers(browser: Browser): Scraper[] {
-  return [new AwwwardsScraper(browser)];
+  return [
+    new AwwwardsScraper(browser),
+    new FwaScraper(browser),
+    new SiteinspireScraper(browser),
+  ];
 }
 
 /**
