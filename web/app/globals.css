@@ -308,6 +308,179 @@ a {
   font-family: var(--font-mono);
 }
 
+/* --- Per-source sections: hero + carousel --- */
+.source-section {
+  margin: 46px 0 8px;
+}
+.source-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.source-head h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 680;
+  letter-spacing: -0.02em;
+}
+.source-award {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.source-count {
+  margin-left: auto;
+  color: var(--text-faint);
+  font-size: 13px;
+}
+
+.hero-wrap {
+  display: flex;
+  justify-content: center;
+}
+.hero-card {
+  width: 100%;
+  max-width: 860px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: border-color 0.18s, transform 0.18s;
+}
+.hero-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+.lead .hero-card {
+  max-width: 960px;
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.8);
+}
+.hero-shot {
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-elev);
+  position: relative;
+}
+.hero-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hero-shot .noshot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.hero-body {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hero-eyebrow {
+  color: var(--text-faint);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.hero-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.lead .hero-title {
+  font-size: 32px;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 4px;
+}
+
+/* Horizontal carousel of the source's other winners */
+.carousel {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 20px 4px 8px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.carousel::-webkit-scrollbar {
+  height: 8px;
+}
+.carousel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.mini-card {
+  flex: 0 0 268px;
+  scroll-snap-align: start;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.16s, transform 0.16s;
+}
+.mini-card:hover {
+  border-color: var(--border);
+  transform: translateY(-2px);
+}
+.mini-shot {
+  aspect-ratio: 16 / 10;
+  background: var(--bg-elev);
+  position: relative;
+}
+.mini-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.mini-shot .noshot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.mini-body {
+  padding: 11px 13px 13px;
+}
+.mini-title {
+  font-weight: 620;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mini-sub {
+  color: var(--text-faint);
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* --- Analytics --- */
 .board-grid {
   display: grid;

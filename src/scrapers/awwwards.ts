@@ -41,14 +41,25 @@ function resolveUrl(href: string | null, base: string): string | undefined {
   }
 }
 
-/** Pull the title out of a card's data-collectable-model-value JSON attr. */
-function parseModelTitle(model: string | null): string | undefined {
-  if (!model) return undefined;
+/**
+ * Parse a card's data-collectable-model-value JSON for the title and the real
+ * award date. `createdAt` is a unix timestamp (seconds) — using it spreads
+ * winners across their actual SOTD days instead of collapsing them onto today.
+ */
+function parseModel(model: string | null): {
+  title?: string;
+  awardDate?: string;
+} {
+  if (!model) return {};
   try {
-    const parsed = JSON.parse(model) as { title?: string };
-    return clean(parsed.title ?? null);
+    const parsed = JSON.parse(model) as { title?: string; createdAt?: number };
+    const awardDate =
+      typeof parsed.createdAt === 'number'
+        ? new Date(parsed.createdAt * 1000).toISOString().slice(0, 10)
+        : undefined;
+    return { title: clean(parsed.title ?? null), awardDate };
   } catch {
-    return undefined;
+    return {};
   }
 }
 
@@ -105,12 +116,13 @@ export class AwwwardsScraper implements Scraper {
         if (!url) continue; // no external link → not a real winner card
         if (seen.has(url)) continue;
         seen.add(url);
+        const model = parseModel(r.model);
         winners.push({
           url,
-          title: parseModelTitle(r.model),
+          title: model.title,
           studio: cleanStudio(r.studio),
           awardType: 'sotd',
-          awardDate: date,
+          awardDate: model.awardDate ?? date,
           sourceUrl: resolveUrl(r.awardHref, SOTD_URL),
         });
       }

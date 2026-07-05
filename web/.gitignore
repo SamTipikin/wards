@@ -4,3 +4,4 @@ out/
 next-env.d.ts
 # Generated at build time from ../data/screenshots
 public/screenshots/
+*.tsbuildinfo

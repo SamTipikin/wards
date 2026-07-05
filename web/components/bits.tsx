@@ -66,9 +66,18 @@ export function Badges({
 }: {
   awards: { source: string; awardType: string }[];
 }) {
+  // Collapse repeats of the same source+type (e.g. a site that was FOTD twice)
+  // so the card shows one badge per distinct platform award.
+  const seen = new Set<string>();
+  const unique = awards.filter((a) => {
+    const key = `${a.source}·${a.awardType}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
   return (
     <div className="badges">
-      {awards.map((a, i) => (
+      {unique.map((a, i) => (
         <span className="badge" key={i}>
           {SOURCE_LABEL[a.source] ?? a.source} · {a.awardType}
         </span>

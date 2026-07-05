@@ -1,6 +1,7 @@
 import type { Browser } from 'playwright';
 import type { RunResult, Scraper, Winner } from '../types.js';
 import { AwwwardsScraper } from './awwwards.js';
+import { CssdaScraper } from './cssda.js';
 import { FwaScraper } from './fwa.js';
 import { SiteinspireScraper } from './siteinspire.js';
 
@@ -9,13 +10,16 @@ export interface ScrapeOutcome extends RunResult {
 }
 
 /**
- * Build the active scraper set. Awwwards (SOTD, DOM), FWA (FOTD via JSON API),
- * SiteInspire (recent featured, DOM). CSSDA hard-blocks automation (403) and
- * Godly is a social-heavy SPA without clean site URLs — both deferred.
+ * Build the active scraper set. Awwwards (SOTD, DOM), CSSDA (WOTD, DOM), FWA
+ * (FOTD via JSON API), SiteInspire (recent featured, DOM). Awwwards and CSSDA
+ * edge-block datacenter IPs (403/Cloudflare) so they only return data from a
+ * residential IP; they log 'failed' from CI and the run continues. Godly is a
+ * social-heavy SPA without clean site URLs — deferred.
  */
 export function buildScrapers(browser: Browser): Scraper[] {
   return [
     new AwwwardsScraper(browser),
+    new CssdaScraper(browser),
     new FwaScraper(browser),
     new SiteinspireScraper(browser),
   ];

@@ -135,6 +135,65 @@ export function getAllSiteIds(): number[] {
   );
 }
 
+export interface SourceSection {
+  source: string;
+  label: string;
+  awardLabel: string;
+  winners: Winner[]; // most-recent award for this source first
+}
+
+const SOURCE_ORDER = ['awwwards', 'cssda', 'fwa', 'siteinspire', 'godly'];
+const SOURCE_META: Record<string, { label: string; awardLabel: string }> = {
+  awwwards: { label: 'Awwwards', awardLabel: 'Site of the Day' },
+  cssda: { label: 'CSSDA', awardLabel: 'Website of the Day' },
+  fwa: { label: 'FWA', awardLabel: 'FWA of the Day' },
+  siteinspire: { label: 'SiteInspire', awardLabel: 'Featured' },
+  godly: { label: 'Godly', awardLabel: 'Featured' },
+};
+
+/**
+ * Winners grouped by award source, each ordered newest-first and deduped by
+ * site (a site winning the same source twice shows once, at its latest date).
+ * A multi-platform winner appears under each source it won on.
+ */
+export function getSourceSections(): SourceSection[] {
+  const rows = db()
+    .prepare(
+      `SELECT a.source, a.award_date AS srcDate,
+              s.id, s.domain, s.url, s.title,
+              an.fonts, an.tech, an.colors, an.vibe, an.screenshot, an.status
+       FROM awards a
+       JOIN sites s ON s.id = a.site_id
+       LEFT JOIN analyses an ON an.site_id = s.id
+       ORDER BY a.award_date DESC, s.id DESC`,
+    )
+    .all() as (SiteJoinRow & { source: string; srcDate: string })[];
+
+  const bySource = new Map<string, Map<number, (typeof rows)[number]>>();
+  for (const r of rows) {
+    let m = bySource.get(r.source);
+    if (!m) bySource.set(r.source, (m = new Map()));
+    if (!m.has(r.id)) m.set(r.id, r); // first seen = most recent (ordered)
+  }
+
+  const ordered = [
+    ...SOURCE_ORDER,
+    ...[...bySource.keys()].filter((s) => !SOURCE_ORDER.includes(s)),
+  ];
+  const out: SourceSection[] = [];
+  for (const source of ordered) {
+    const m = bySource.get(source);
+    if (!m) continue;
+    const winners = [...m.values()].map((r) => ({
+      ...hydrate(r),
+      awardDate: r.srcDate,
+    }));
+    const meta = SOURCE_META[source] ?? { label: source, awardLabel: 'Winner' };
+    out.push({ source, label: meta.label, awardLabel: meta.awardLabel, winners });
+  }
+  return out;
+}
+
 export interface Stat {
   name: string;
   count: number;

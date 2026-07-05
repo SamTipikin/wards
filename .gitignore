@@ -10,3 +10,8 @@ site/node_modules/
 data/radar.db-wal
 data/radar.db-shm
 data/radar.db-journal
+
+# stray sqlite sidecars (any name)
+data/*.db-wal
+data/*.db-shm
+data/*.db-journal
