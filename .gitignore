@@ -15,3 +15,9 @@ data/radar.db-journal
 data/*.db-wal
 data/*.db-shm
 data/*.db-journal
+
+# local automation logs
+daily-local.log
+daily-local.out.log
+daily-local.err.log
+.daily-local.lock
