@@ -7,7 +7,7 @@
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
-    <string>/Users/samtipikin/Desktop/Wards/scripts/daily-local.sh</string>
+    <string>/Users/samtipikin/wards/scripts/daily-local.sh</string>
   </array>
   <!-- 08:00 local time daily. If the Mac is asleep/off, launchd runs it at the
        next wake/boot (once, as catch-up). -->
@@ -19,9 +19,9 @@
     <integer>0</integer>
   </dict>
   <key>StandardOutPath</key>
-  <string>/Users/samtipikin/Desktop/Wards/daily-local.out.log</string>
+  <string>/Users/samtipikin/wards/daily-local.out.log</string>
   <key>StandardErrorPath</key>
-  <string>/Users/samtipikin/Desktop/Wards/daily-local.err.log</string>
+  <string>/Users/samtipikin/wards/daily-local.err.log</string>
   <key>RunAtLoad</key>
   <false/>
 </dict>

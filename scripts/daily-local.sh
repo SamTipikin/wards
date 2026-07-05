@@ -5,7 +5,7 @@
 # -> rebuild static site -> redeploy to Vercel. The live link refreshes itself.
 set -uo pipefail
 
-REPO="/Users/samtipikin/Desktop/Wards"
+REPO="/Users/samtipikin/wards"
 LOG="$REPO/daily-local.log"
 LOCK="$REPO/.daily-local.lock"
 
